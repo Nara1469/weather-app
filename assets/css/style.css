@@ -1,4 +1,23 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-image: linear-gradient(
+        rgb(19, 42, 248) 0%,
+        rgb(4, 2, 105) 100%
+    );
+    text-align: center;
+    color: white;
+}
+
+.container {
+    margin: 0;
+    max-width: 100%;
+}
+
+.add-space {
+    margin-bottom: 15px;
 }
