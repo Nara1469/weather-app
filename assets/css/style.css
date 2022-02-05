@@ -18,6 +18,26 @@ header {
     max-width: 100%;
 }
 
+.small-card {
+    background-image: linear-gradient(
+        rgb(19, 42, 248) 0%,
+        rgb(4, 2, 105) 100%
+    );
+    /* background-color: navy; */
+    color: white;
+}
+
 .add-space {
     margin-bottom: 15px;
+}
+
+.uv-index {
+    box-sizing: border-box;
+    padding: 0px 15px;
+    text-align: center;
+}
+
+.btn-search {
+    background-color: rgb(2, 2, 192);
+    color: white;
 }
