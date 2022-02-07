@@ -1,9 +1,6 @@
 const myApiKey = "b9d312a1f35b1b477f63e4d5e699509c";
 
-const currentDay = moment();
-let today = currentDay;
-
-// $("#day1-date").text(today.format("l"));
+let today = moment();
 
 const searchBtn = document.getElementById("search-button");
 const cityName = document.getElementById("city-name");
@@ -46,31 +43,36 @@ const day5Temp = document.getElementById("day5-temp");
 const day5Wind = document.getElementById("day5-wind");
 const day5Humid = document.getElementById("day5-humid");
 
-const cityArray = ["Atlanta"];
+const cityArray = [];
+let checkCity = "";
 
 function getCityName(event) {
   event.preventDefault();
-  const element = cityName.value;
-  if (element) {
-    // Create new button for the searched city
-    const newBtn = document.createElement('button');
-    newBtn.classList.add("form-control");
-    newBtn.classList.add("btn");
-    newBtn.classList.add("btn-secondary");
-    newBtn.classList.add("add-space");
-    newBtn.textContent = element;
-    searchCity.appendChild(newBtn);
-    // Save the searched city
-    cityArray.push(element);
+  const city = cityName.value;
+  if (city) {
+    getApi(city);
+    console.log(checkCity);
+    if (checkCity === city) {
+      // Create new button for the searched city
+      const newBtn = document.createElement('button');
+      newBtn.classList.add("form-control");
+      newBtn.classList.add("btn");
+      newBtn.classList.add("btn-secondary");
+      newBtn.classList.add("add-space");
+      newBtn.textContent = city;
+      searchCity.appendChild(newBtn);
+      // Save the searched city
+      cityArray.push(city);
+      localStorage.setItem("city", JSON.stringify(cityArray));
+    }
   }
-  getApi(element);
 }
 
-function showForcast(event) {
+function showForecast(event) {
   event.preventDefault();
   const tempElement = event.target;
-  const element = tempElement.textContent;
-  getApi(element);
+  const city = tempElement.textContent;
+  getApi(city);
 }
 
 function getApi(cityName) {
@@ -79,87 +81,100 @@ function getApi(cityName) {
 
   fetch(weatherUrl)
     .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      const lat = data[0].lat;
-      const lon = data[0].lon;
-      const newWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${myApiKey}&units=imperial`;
-      fetch(newWeatherUrl)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          console.log(data);
-          // Current forecast
-          currentCity.textContent = cityName + " (" + today.format("l") + ")";
-          currentIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon +"@2x.png");
-          currentTemp.textContent = data.current.temp + "°F";
-          currentWind.textContent = data.current.wind_speed + " MPH";
-          currentHumid.textContent = data.current.humidity + " %";
-          currentUvi.textContent = data.current.uvi;
-          colorUvi(data.current.uvi);
-          // Day 1 forecast
-          day1Date.textContent = today.add(1,'d').format("l");
-          day1Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[0].weather[0].icon +"@2x.png");
-          day1Temp.textContent = data.daily[0].temp.max + "°F";
-          day1Wind.textContent = data.daily[0].wind_speed + " MPH";
-          day1Humid.textContent = data.daily[0].humidity + " %";
-          // Day 2 forecast
-          day2Date.textContent = today.add(1,'d').format("l");
-          day2Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[1].weather[0].icon +"@2x.png");
-          day2Temp.textContent = data.daily[1].temp.max + "°F";
-          day2Wind.textContent = data.daily[1].wind_speed + " MPH";
-          day2Humid.textContent = data.daily[1].humidity + " %";
-          // Day 3 forecast
-          day3Date.textContent = today.add(1,'d').format("l");
-          day3Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[2].weather[0].icon +"@2x.png");
-          day3Temp.textContent = data.daily[2].temp.max + "°F";
-          day3Wind.textContent = data.daily[2].wind_speed + " MPH";
-          day3Humid.textContent = data.daily[2].humidity + " %";
-          // Day 4 forecast
-          day4Date.textContent = today.add(1,'d').format("l");
-          day4Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[3].weather[0].icon +"@2x.png");
-          day4Temp.textContent = data.daily[3].temp.max + "°F";
-          day4Wind.textContent = data.daily[3].wind_speed + " MPH";
-          day4Humid.textContent = data.daily[3].humidity + " %";
-          // Day 5 forecast
-          day5Date.textContent = today.add(1,'d').format("l");
-          day5Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[4].weather[0].icon +"@2x.png");
-          day5Temp.textContent = data.daily[4].temp.max + "°F";
-          day5Wind.textContent = data.daily[4].wind_speed + " MPH";
-          day5Humid.textContent = data.daily[4].humidity + " %";
-          // Change date ???
-          today = today.subtract(5,'d');
-        });
-    });
+      if (response.ok) {
+        response.json().then(function (data) {
+          checkCity = data[0].name;
+          if (checkCity === cityName) {
+          const lat = data[0].lat;
+          const lon = data[0].lon;
+
+          const newWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${myApiKey}&units=imperial`;
+
+          fetch(newWeatherUrl)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            console.log(data);
+            // Current forecast
+            currentCity.textContent = checkCity + " (Today: " + today.format("l") + ")";
+            currentIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png");
+            currentTemp.textContent = data.current.temp + "°F";
+            currentWind.textContent = data.current.wind_speed + " MPH";
+            currentHumid.textContent = data.current.humidity + " %";
+            currentUvi.textContent = data.current.uvi;
+            colorUvi(data.current.uvi);
+            // Day 1 forecast
+            day1Date.textContent = today.add(1, 'd').format("l");
+            day1Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[0].weather[0].icon + "@2x.png");
+            day1Temp.textContent = data.daily[0].temp.max + "°F";
+            day1Wind.textContent = data.daily[0].wind_speed + " mph";
+            day1Humid.textContent = data.daily[0].humidity + " %";
+            // Day 2 forecast
+            day2Date.textContent = today.add(1, 'd').format("l");
+            day2Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[1].weather[0].icon + "@2x.png");
+            day2Temp.textContent = data.daily[1].temp.max + "°F";
+            day2Wind.textContent = data.daily[1].wind_speed + " mph";
+            day2Humid.textContent = data.daily[1].humidity + " %";
+            // Day 3 forecast
+            day3Date.textContent = today.add(1, 'd').format("l");
+            day3Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[2].weather[0].icon + "@2x.png");
+            day3Temp.textContent = data.daily[2].temp.max + "°F";
+            day3Wind.textContent = data.daily[2].wind_speed + " mph";
+            day3Humid.textContent = data.daily[2].humidity + " %";
+            // Day 4 forecast
+            day4Date.textContent = today.add(1, 'd').format("l");
+            day4Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[3].weather[0].icon + "@2x.png");
+            day4Temp.textContent = data.daily[3].temp.max + "°F";
+            day4Wind.textContent = data.daily[3].wind_speed + " mph";
+            day4Humid.textContent = data.daily[3].humidity + " %";
+            // Day 5 forecast
+            day5Date.textContent = today.add(1, 'd').format("l");
+            day5Icon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[4].weather[0].icon + "@2x.png");
+            day5Temp.textContent = data.daily[4].temp.max + "°F";
+            day5Wind.textContent = data.daily[4].wind_speed + " mph";
+            day5Humid.textContent = data.daily[4].humidity + " %";
+            // Change date ???
+            today = moment();
+          });
+        } else {
+          alert("Check the city name!");
+        }
+      });
+    }
+    else {
+      alert("Check the city name!");
+    }
+  });
 }
 
+// color the UV index
+
 function colorUvi(uvIndex) {
-  if (uvIndex <= 2) {
-    currentUvi.setAttribute("style","background-color: #008000;");
+  if (uvIndex <= 2) { // LOW - Green (safe)
+    currentUvi.setAttribute("style", "background-color: green;");
   }
-  if ((uvIndex > 2) && (uvIndex <= 5)) {
-    currentUvi.setAttribute("style","background-color: yellow;");
+  if ((uvIndex > 2) && (uvIndex <= 5)) {  // MODERATE - Yellow
+    currentUvi.setAttribute("style", "background-color: yellow;");
   }
-  if ((uvIndex > 5) && (uvIndex <= 7)) {
-    currentUvi.setAttribute("style","background-color: orange;");
+  if ((uvIndex > 5) && (uvIndex <= 7)) {  // HIGH -Orange
+    currentUvi.setAttribute("style", "background-color: orange;");
   }
-  if ((uvIndex > 7) && (uvIndex <= 10)) {
-    currentUvi.setAttribute("style","background-color: red;");
+  if ((uvIndex > 7) && (uvIndex <= 10)) {  // VERY HIGH - red
+    currentUvi.setAttribute("style", "background-color: red;");
   }
-  if (uvIndex > 10) {
-    currentUvi.setAttribute("style","background-color: purple;");
+  if (uvIndex > 10) {  // EXTREME - Purple 
+    currentUvi.setAttribute("style", "background-color: purple;");
   }
 }
 
 function init() {
-  getApi("Atlanta");
+  localStorage.clear();
+  getApi("Atlanta");       // Default City Atlanta
 }
 
 init();
 
 searchBtn.addEventListener("click", getCityName);
 
-searchCity.addEventListener("click", showForcast);
+searchCity.addEventListener("click", showForecast);

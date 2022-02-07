@@ -23,7 +23,6 @@ header {
         rgb(19, 42, 248) 0%,
         rgb(4, 2, 105) 100%
     );
-    /* background-color: navy; */
     color: white;
 }
 
@@ -34,6 +33,7 @@ header {
 .uv-index {
     box-sizing: border-box;
     padding: 0px 15px;
+    border-radius: 5px;
     text-align: center;
 }
 
