@@ -13,6 +13,10 @@ header {
     color: white;
 }
 
+#current-date {
+    padding-left: 15px;
+}
+
 .container {
     margin: 0;
     max-width: 100%;
@@ -40,4 +44,10 @@ header {
 .btn-search {
     background-color: rgb(2, 2, 192);
     color: white;
+}
+
+.today {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-center;
 }
