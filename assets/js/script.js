@@ -71,12 +71,8 @@ function getApi(newCity) {
         response.json().then(function (data) {
           console.log(data);
           if (data.length > 0) {  // checks if the city found
-            const checkCity = data[0].name;
-            console.log(checkCity);
-            const nameArray = newCity.split('');
-            nameArray[0] = nameArray[0].toUpperCase();
-            newCity = nameArray.join('');
-            if (checkCity === newCity) {  // checks (found city === entered city)
+            const foundCity = data[0].name;
+            if (foundCity.toLowerCase() === newCity.toLowerCase()) {  // checks (found city === entered city)
               const lat = data[0].lat;
               const lon = data[0].lon;
 
@@ -89,7 +85,7 @@ function getApi(newCity) {
                 .then(function (data) {
                   console.log(data);
                   // Current forecast
-                  currentCity.textContent = checkCity;
+                  currentCity.textContent = foundCity;
                   currentDate.textContent = "(Today: " + today.format("l") + ")";
                   currentIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png");
                   currentTemp.textContent = data.current.temp + "°F";
@@ -128,17 +124,17 @@ function getApi(newCity) {
                   day5Wind.textContent = data.daily[5].wind_speed + " mph";
                   day5Humid.textContent = data.daily[5].humidity + " %";
                   today = moment();
-                  if (!cityArray.includes(checkCity)) {
+                  if (!cityArray.includes(foundCity)) {
                     // Create new button for the searched city
                     const newBtn = document.createElement('button');
                     newBtn.classList.add("form-control");
                     newBtn.classList.add("btn");
                     newBtn.classList.add("btn-secondary");
                     newBtn.classList.add("add-space");
-                    newBtn.textContent = checkCity;
+                    newBtn.textContent = foundCity;
                     searchCity.appendChild(newBtn);
                     // Save the searched city
-                    cityArray.push(checkCity);
+                    cityArray.push(foundCity);
                     localStorage.setItem("city", JSON.stringify(cityArray));
                   }
                 });
