@@ -63,7 +63,7 @@ function showSearchedCityForecast(event) {
 
 function getApi(newCity) {
 
-  const weatherUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${newCity}&limit=1&appid=${myApiKey}`;
+  const weatherUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${newCity}&limit=1&appid=${myApiKey}`;
 
   fetch(weatherUrl)
     .then(function (response) {
