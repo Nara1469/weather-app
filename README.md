@@ -21,9 +21,9 @@ A weather dashboard includes to view:
  2. a list of cities that are searched is saved for search history 
  3. a current and five-day forecast for the searched city
 
-First, enter the city name with form inputs to search for a city. /function getCityName()/
+First, enter the city name with form inputs to search for a city. /"search-button" event listener/
 
-Once we got the city name, it is checked through the Server-Side-API data. To connect with OpenWeather One Call API we need to register and get an API key. To get forecast data, 2 layered fetch() were used. The first one is to find a city, then use that city coordinates to find current and daily forecast. /function getApi()/
+Once we got the city name, it is checked through the Server-Side-API data. To connect with OpenWeather One Call API we need to register and get an API key. To get forecast data, 2 layered fetch() were used. The first one is to find a city, then use that city coordinates to find current and daily forecast. /function getApiData()/
 
 The current city forecast is presented with current and future conditions:
 
@@ -31,7 +31,7 @@ To view current weather conditions for that city, it is presented with the city 
 
 To view future weather conditions for that city, it is presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity.
 
-After the city name is searched it is saved in the search history as a button type. Also, the city name is stored at localStorage and cityArray for persistent data use. When the button is clicked on a city in the search history then it is presented again with current and future conditions for that city. /function showSearchedCityForecast()/
+After the city name is searched it is saved in the search history as a button type. Also, the city name is stored at localStorage and cityArray for persistent data use. When the button is clicked on a city in the search history then it is presented again with current and future conditions for that city. /"search-city" event listener/
 
 The UV index is presented with a color that indicates whether the conditions are safe (0 to 2 low), moderate (3 to 7), or severe (8 to 10+). The UV index scale is used according to the United States EPA guideline (Environmental Protection Agency). /function colorUvi()/
 
