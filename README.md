@@ -43,9 +43,22 @@ The UV index is presented with a color that indicates whether the conditions are
 
 A default city is Atlanta. For this application, the localStorage is used, so before we use it needs to be cleared.  /function init()/
 
-Here is a link to the deployed website. [The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](https://nara1469.github.io/weather-app/)
+## Built With
+<ul>
+  <li>HTML</li>
+  <li>CSS</li>
+  <li>JavaScript</li>
+  <li><a href="https://getbootstrap.com/" >Bootstrap for CSS</a></li>
+  <li><a href="https://jquery.com/" >jQuery</a></li>  
+  <li><a href="https://momentjs.com/" >Moment JS</a></li>
+  <li><a href="https://openweathermap.org/" >OpenWeatherMap API</a></li>
+</ul>
 
-## Mock-Up
+## Screenshot
 
 The following image shows the web application's appearance and functionality:
 ![The default city is for Atlanta.](./assets/images/weather-dashboard.png)
+
+## Live
+
+Here is a link to the deployed website. [The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](https://nara1469.github.io/weather-app/)

@@ -5,6 +5,7 @@
 }
 
 header {
+    width: 100vw;
     background-image: linear-gradient(
         rgb(19, 42, 248) 0%,
         rgb(4, 2, 105) 100%
@@ -50,4 +51,8 @@ header {
     display: flex;
     flex-direction: row;
     align-items: flex-center;
+}
+
+.col {
+    padding: 15px;
 }
